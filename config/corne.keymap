@@ -9,34 +9,45 @@
 #include <dt-bindings/zmk/bt.h>
 
 / {
-    // --- CUSTOM BEHAVIORS ---
     behaviors {
-        hm: homerow_mods {
+        // Left hand HRMs: Only trigger hold if a right-hand key is pressed
+        hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
+            flavor = "balanced";
             tapping-term-ms = <170>;
-            quick-tap-ms = <0>;
-            flavor = "tap-preferred";
+            quick-tap-ms = <175>;                // Repeat tap quickly to hold the letter
+            require-prior-idle-ms = <150>;       // Prevents false triggers while typing fast
             bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
+            hold-trigger-on-release;             // Matches the precise timing of CHORDAL_HOLD
+        };
+
+        // Right hand HRMs: Only trigger hold if a left-hand key is pressed
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <170>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
+            hold-trigger-on-release;
         };
     };
 
-    // --- KEYMAP ---
     keymap {
         compatible = "zmk,keymap";
 
         base_layer {
             display-name = "Base";
-            // -----------------------------------------------------------------------------------------
-            // | CAPS |  Q  |  W  |  F  |  P  |  G  |   |  J  |  L   |  U  |  Y  |  -  |  =   |
-            // | SHFT | A/GU| R/AL| S/CT| T/SH|  D  |   |  H  | N/SH | E/CT | I/AL| O/GU|  '   |
-            // | CT+Z |  Z  |  X  |  C  |  V  |  B  |   |  K  |  M   |  ,  |  .  |  /  | RPT  |
-            //                    | ESC | TAB | SPC |   | ENT | BSPC | DEL |
+            // Notice: The right hand now uses LSHIFT, LCTRL, LALT, and LGUI to fix Windows!
             bindings = <
-   &kp CAPS   &kp Q      &kp W      &kp F       &kp P        &kp G      &kp J  &kp L        &kp U        &kp Y       &kp MINUS  &kp EQUAL
-   &kp LSHIFT &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T &kp D      &kp H  &hm RSHIFT N &hm RCTRL E  &hm RALT I  &hm RGUI O &kp SQT
-   &kp LC(Z)  &kp Z      &kp X      &kp C       &kp V        &kp B      &kp K  &kp M        &kp COMMA    &kp DOT     &kp FSLH   &key_repeat
-                                    &kp ESC     &kp TAB      &kp SPACE  &kp RET &kp BSPC    &kp DEL
+   &kp CAPS   &kp Q       &kp W       &kp F        &kp P         &kp G      &kp J  &kp L         &kp U         &kp Y        &kp MINUS   &kp EQUAL
+   &kp LSHIFT &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHIFT T &kp D      &kp H  &hmr LSHIFT N &hmr LCTRL E  &hmr LALT I  &hmr LGUI O &kp SQT
+   &kp LC(Z)  &kp Z       &kp X       &kp C        &kp V         &kp B      &kp K  &kp M         &kp COMMA     &kp DOT      &kp FSLH    &key_repeat
+                                      &kp ESC      &kp TAB       &kp SPACE  &kp RET &kp BSPC     &kp DEL
             >;
         };
     };
