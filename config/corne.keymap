@@ -77,6 +77,33 @@
         };
     };
 
+    // --- ACCENT MACROS ---
+    macros {
+        // A: á (160) / Á (0193)
+        a_low: a_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N6 &kp KP_N0>, <&macro_release &kp LALT>; };
+        a_up: a_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N1 &kp KP_N9 &kp KP_N3>, <&macro_release &kp LALT>; };
+
+        // E: é (130) / É (0201)
+        e_low: e_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N3 &kp KP_N0>, <&macro_release &kp LALT>; };
+        e_up: e_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N2 &kp KP_N0 &kp KP_N1>, <&macro_release &kp LALT>; };
+
+        // I: í (161) / Í (0205)
+        i_low: i_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N6 &kp KP_N1>, <&macro_release &kp LALT>; };
+        i_up: i_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N2 &kp KP_N0 &kp KP_N5>, <&macro_release &kp LALT>; };
+
+        // O: ó (162) / Ó (0211)
+        o_low: o_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N6 &kp KP_N2>, <&macro_release &kp LALT>; };
+        o_up: o_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N2 &kp KP_N1 &kp KP_N1>, <&macro_release &kp LALT>; };
+
+        // U: ú (163) / Ú (0218)
+        u_low: u_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N6 &kp KP_N3>, <&macro_release &kp LALT>; };
+        u_up: u_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N2 &kp KP_N1 &kp KP_N8>, <&macro_release &kp LALT>; };
+
+        // N: ñ (164) / Ñ (0209)
+        n_low: n_low { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N1 &kp KP_N6 &kp KP_N4>, <&macro_release &kp LALT>; };
+        n_up: n_up { compatible = "zmk,behavior-macro"; #binding-cells = <0>; tap-ms = <20>; bindings = <&macro_press &kp LALT>, <&macro_tap &kp KP_N0 &kp KP_N2 &kp KP_N0 &kp KP_N9>, <&macro_release &kp LALT>; };
+    };
+
     // --- BEHAVIORS ---
     behaviors {
         // Left hand HRMs: Only trigger hold if a right-hand key is pressed
@@ -104,6 +131,37 @@
             hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
             hold-trigger-on-release;
         };
+
+        // Tap Dance: 1 = Caps Word, 2 = Caps Lock
+        td_caps: tap_dance_caps {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&caps_word>, <&kp CAPS>;
+        };
+
+        // Tap Dance: 1 = Sticky Layer ACC, 2 = App Menu
+        td_acc: tap_dance_accent {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&sl ACC>, <&kp K_APP>;
+        };
+
+        // Shift + Ctrl+Z = Ctrl+Y
+        b_undo: behavior_undo_redo {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp LC(Z)>, <&kp LC(Y)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        mm_a: mm_a { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&a_low>, <&a_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
+        mm_e: mm_e { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&e_low>, <&e_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
+        mm_i: mm_i { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&i_low>, <&i_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
+        mm_o: mm_o { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&o_low>, <&o_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
+        mm_u: mm_u { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&u_low>, <&u_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
+        mm_n: mm_n { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>; bindings = <&n_low>, <&n_up>; mods = <(MOD_LSFT|MOD_RSFT)>; };
     };
 
     keymap {
@@ -112,13 +170,12 @@
         base_layer {
             display-name = "Base";
             bindings = <
-   &kp CAPS   &kp Q       &kp W       &kp F        &kp P         &kp G      &kp J  &kp L         &kp U         &kp Y        &kp MINUS   &kp EQUAL
-   &kp LSHIFT &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHIFT T &kp D      &kp H  &hmr LSHIFT N &hmr LCTRL E  &hmr LALT I  &hmr LGUI O &kp SQT
-   &kp LC(Z)  &kp Z       &kp X       &kp C        &kp V         &kp B      &kp K  &kp M         &kp COMMA     &kp DOT      &kp FSLH    &key_repeat
+   &td_caps   &kp Q       &kp W       &kp F        &kp P         &kp G      &kp J  &kp L         &kp U         &kp Y        &kp MINUS   &kp EQUAL
+   &td_acc    &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHIFT T &kp D      &kp H  &hmr LSHIFT N &hmr LCTRL E  &hmr LALT I  &hmr LGUI O &kp SQT
+   &b_undo    &kp Z       &kp X       &kp C        &kp V         &kp B      &kp K  &kp M         &kp COMMA     &kp DOT      &kp FSLH    &key_repeat
                                       &lt SYM ESC  &lt NUM TAB   &lt NAV SPACE   &lt NAV2 RET  &lt FUN BSPC  &lt BT DEL
             >;
         };
-
         sym_layer {
             display-name = "Sym";
             bindings = <
@@ -192,9 +249,9 @@
         acc_layer {
             display-name = "Acc";
             bindings = <
-   &none &none &none &none &none &none                          &none &none &none &none &none &none
-   &none &none &none &none &none &none                          &none &none &none &none &none &none
-   &none &none &none &none &none &none                          &none &none &none &none &none &none
+   &none &none &none &none &none &none                          &none &none  &mm_u &none &none &none
+   &none &mm_a &none &none &none &none                          &none &mm_n  &mm_e &mm_i &mm_o &none
+   &none &none &none &none &none &none                          &none &none  &none &none &none &none
                      &trans &trans &trans                       &trans &trans &trans
             >;
         };
