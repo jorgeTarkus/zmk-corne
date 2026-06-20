@@ -9,21 +9,34 @@
 #include <dt-bindings/zmk/bt.h>
 
 / {
+    // --- CUSTOM BEHAVIORS ---
+    behaviors {
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <170>;
+            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    // --- KEYMAP ---
     keymap {
         compatible = "zmk,keymap";
 
         base_layer {
             display-name = "Base";
-// -----------------------------------------------------------------------------------------
-// | CAPS |  Q  |  W  |  F  |  P  |  G  |   |  J  |  L   |  U  |  Y  |  -  |  =   |
-// | SHFT |  A  |  R  |  S  |  T  |  D  |   |  H  |  N   |  E  |  I  |  O  |  '   |
-// | CT+Z |  Z  |  X  |  C  |  V  |  B  |   |  K  |  M   |  ,  |  .  |  /  | RPT  |
-//                    | ESC | TAB | SPC |   | ENT | BSPC | DEL |
+            // -----------------------------------------------------------------------------------------
+            // | CAPS |  Q  |  W  |  F  |  P  |  G  |   |  J  |  L   |  U  |  Y  |  -  |  =   |
+            // | SHFT | A/GU| R/AL| S/CT| T/SH|  D  |   |  H  | N/SH | E/CT | I/AL| O/GU|  '   |
+            // | CT+Z |  Z  |  X  |  C  |  V  |  B  |   |  K  |  M   |  ,  |  .  |  /  | RPT  |
+            //                    | ESC | TAB | SPC |   | ENT | BSPC | DEL |
             bindings = <
-   &kp CAPS   &kp Q  &kp W  &kp F  &kp P  &kp G      &kp J  &kp L  &kp U      &kp Y    &kp MINUS &kp EQUAL
-   &kp LSHIFT &kp A  &kp R  &kp S  &kp T  &kp D      &kp H  &kp N  &kp E      &kp I    &kp O     &kp SQT
-   &kp LC(Z)  &kp Z  &kp X  &kp C  &kp V  &kp B      &kp K  &kp M  &kp COMMA  &kp DOT  &kp FSLH  &key_repeat
-                         &kp ESC &kp TAB &kp SPACE   &kp RET &kp BSPC &kp DEL
+   &kp CAPS   &kp Q      &kp W      &kp F       &kp P        &kp G      &kp J  &kp L        &kp U        &kp Y       &kp MINUS  &kp EQUAL
+   &kp LSHIFT &hm LGUI A &hm LALT R &hm LCTRL S &hm LSHIFT T &kp D      &kp H  &hm RSHIFT N &hm RCTRL E  &hm RALT I  &hm RGUI O &kp SQT
+   &kp LC(Z)  &kp Z      &kp X      &kp C       &kp V        &kp B      &kp K  &kp M        &kp COMMA    &kp DOT     &kp FSLH   &key_repeat
+                                    &kp ESC     &kp TAB      &kp SPACE  &kp RET &kp BSPC    &kp DEL
             >;
         };
     };
