@@ -7,6 +7,18 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/rgb.h>
+
+// --- LAYER DEFINITIONS ---
+#define BASE 0
+#define SYM  1
+#define NUM  2
+#define PAD  3
+#define NAV  4
+#define NAV2 5
+#define FUN  6
+#define BT   7
+#define ACC  8
 
 / {
     // --- COMBOS ---
@@ -99,12 +111,91 @@
 
         base_layer {
             display-name = "Base";
-            // Notice: The right hand now uses LSHIFT, LCTRL, LALT, and LGUI to fix Windows!
             bindings = <
    &kp CAPS   &kp Q       &kp W       &kp F        &kp P         &kp G      &kp J  &kp L         &kp U         &kp Y        &kp MINUS   &kp EQUAL
    &kp LSHIFT &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHIFT T &kp D      &kp H  &hmr LSHIFT N &hmr LCTRL E  &hmr LALT I  &hmr LGUI O &kp SQT
    &kp LC(Z)  &kp Z       &kp X       &kp C        &kp V         &kp B      &kp K  &kp M         &kp COMMA     &kp DOT      &kp FSLH    &key_repeat
-                                      &kp ESC      &kp TAB       &kp SPACE  &kp RET &kp BSPC     &kp DEL
+                                      &lt SYM ESC  &lt NUM TAB   &lt NAV SPACE   &lt NAV2 RET  &lt FUN BSPC  &lt BT DEL
+            >;
+        };
+
+        sym_layer {
+            display-name = "Sym";
+            bindings = <
+   &none     &none    &none    &none     &none      &none       &kp LBKT &kp DLLR &kp PRCNT &kp CARET &kp RBKT &kp GRAVE
+   &none     &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &none       &kp LPAR &kp EXCL &kp AT    &kp HASH  &kp RPAR &kp COLON
+   &kp LC(Z) &none    &none    &none     &none      &none       &kp LBRC &kp AMPS &kp STAR  &kp PIPE  &kp RBRC &kp BSLH
+                               &trans    &trans     &trans      &trans   &trans   &trans
+            >;
+        };
+
+        num_layer {
+            display-name = "Num";
+            bindings = <
+   &none     &none    &none    &none     &none      &none       &tog PAD      &kp N4 &kp N5 &kp N6 &kp MINUS &kp PLUS
+   &none     &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &none       &none         &kp N1 &kp N2 &kp N3 &kp N0    &kp DOT
+   &kp LC(Z) &none    &none    &none     &none      &none       &kp C_AL_CALC &kp N7 &kp N8 &kp N9 &kp FSLH  &kp STAR
+                               &trans    &trans     &trans      &trans        &trans &trans
+            >;
+        };
+
+        pad_layer {
+            display-name = "Pad";
+            bindings = <
+   &none     &none    &none    &none     &none      &none       &tog PAD      &kp KP_N4 &kp KP_N5 &kp KP_N6 &kp KP_MINUS  &kp KP_PLUS
+   &none     &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &none       &kp KP_NUM    &kp KP_N1 &kp KP_N2 &kp KP_N3 &kp KP_N0     &kp KP_DOT
+   &kp LC(Z) &none    &none    &none     &none      &none       &kp C_AL_CALC &kp KP_N7 &kp KP_N8 &kp KP_N9 &kp KP_DIVIDE &kp KP_MULTIPLY
+                               &trans    &trans     &trans      &trans        &trans    &trans
+            >;
+        };
+
+        nav_layer {
+            display-name = "Nav";
+            bindings = <
+   &none     &none    &none    &none     &none      &none       &kp PG_UP &none    &none    &none  &none     &none
+   &none     &kp LGUI &kp LALT &kp LCTRL &kp LSHIFT &none       &kp HOME  &kp LEFT &kp DOWN &kp UP &kp RIGHT &kp END
+   &kp LC(Z) &none    &none    &none     &none      &none       &kp PG_DN &none    &none    &none  &none     &none
+                               &trans    &trans     &trans      &trans    &trans   &trans
+            >;
+        };
+
+        nav2_layer {
+            display-name = "Nav2";
+            bindings = <
+   &none     &none    &none  &none    &none     &kp PG_UP       &none &none      &none      &none    &none    &none
+   &kp HOME  &kp LEFT &kp UP &kp DOWN &kp RIGHT &kp END         &none &kp LSHIFT &kp LCTRL  &kp LALT &kp LGUI &none
+   &kp LC(Z) &none    &none  &none    &none     &kp PG_DN       &none &none      &none      &none    &none    &none
+                               &trans &trans    &trans          &trans &trans &trans
+            >;
+        };
+
+        fun_layer {
+            display-name = "Fun";
+            bindings = <
+   &none &kp F5 &kp F6  &kp F7  &kp F8  &none                   &none &none      &none      &none    &none    &none
+   &none &kp F1 &kp F2  &kp F3  &kp F4  &none                   &none &kp LSHIFT &kp LCTRL  &kp LALT &kp LGUI &none
+   &none &kp F9 &kp F10 &kp F11 &kp F12 &none                   &none &none      &none      &none    &none    &none
+                        &trans  &trans  &trans                  &trans &trans &trans
+            >;
+        };
+
+        bt_layer {
+            display-name = "BT";
+            bindings = <
+   &none &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4    &none &none &none &none &none &none
+   &none &none        &none        &none        &none        &none           &none &none &none &none &none &none
+   &none &none        &none        &none        &none        &bt BT_CLR      &none &none &none &none &none &none
+                                   &trans       &trans       &trans          &trans &trans &trans
+            >;
+        };
+
+        acc_layer {
+            display-name = "Acc";
+            bindings = <
+   &none &none &none &none &none &none                          &none &none &none &none &none &none
+   &none &none &none &none &none &none                          &none &none &none &none &none &none
+   &none &none &none &none &none &none                          &none &none &none &none &none &none
+                     &trans &trans &trans                       &trans &trans &trans
             >;
         };
     };
